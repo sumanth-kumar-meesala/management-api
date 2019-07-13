@@ -173,13 +173,13 @@ sendVerificationMail = function(user, req, res) {
       var transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-          user: process.env.email,
-          pass: process.env.password
+          user: "meesalasumanth1@gmail.com",
+          pass: "$Umu06051994"
         }
       });
 
       var link =
-        "https://ancient-fortress-28196.herokuapp.com/user/confirmation/" + token.token;
+        "https://murmuring-woodland-60693.herokuapp.com/user/confirmation/" + token.token;
 
       var mailOptions = {
         from: "noreplay@sumanth.com",
