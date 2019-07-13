@@ -173,8 +173,8 @@ sendVerificationMail = function(user, req, res) {
       var transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-          user: "meesalasumanth1@gmail.com",
-          pass: "$Umu06051994"
+           user: process.env.email,
+          pass: process.env.password
         }
       });
 
