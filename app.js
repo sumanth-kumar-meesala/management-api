@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const userRoute = require("./routes/user.route");
+const questionRoute = require("./routes/question.route");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
@@ -51,6 +52,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/user", userRoute);
+app.use("/question", questionRoute);
 
 const port = process.env.PORT || 9000;
 
