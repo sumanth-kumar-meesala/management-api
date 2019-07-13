@@ -81,7 +81,7 @@ exports.login = function(req, res) {
         res.json({
           success: true,
           message: "Access token generation successfull.",
-          data: token
+          data: { token: token, type: user.type }
         });
       });
     })
@@ -173,13 +173,14 @@ sendVerificationMail = function(user, req, res) {
       var transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-           user: process.env.email,
+          user: process.env.email,
           pass: process.env.password
         }
       });
 
       var link =
-        "https://murmuring-woodland-60693.herokuapp.com/user/confirmation/" + token.token;
+        "https://murmuring-woodland-60693.herokuapp.com/user/confirmation/" +
+        token.token;
 
       var mailOptions = {
         from: "noreplay@sumanth.com",
