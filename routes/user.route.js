@@ -10,5 +10,6 @@ router.post("/register", user_controller.register);
 router.post("/login", user_controller.login);
 router.post("/updatePassword", user_controller.updatePassword);
 router.post("/addUser", user_controller.addUser);
+router.post("/listUser", user_controller.listUser);
 
 module.exports = router;

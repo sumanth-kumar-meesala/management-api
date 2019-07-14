@@ -245,6 +245,20 @@ exports.addUser = function(req, res) {
     });
 };
 
+exports.listUser = function(req, res) {
+  User.find({})
+    .then(data => {
+      return res.status(200).json({
+        success: true,
+        message: "List fetched successfully.",
+        data: data
+      });
+    })
+    .catch(error => {
+      return res.status(500).json({ success: false, message: error.message });
+    });
+};
+
 sendVerificationMail = function(user, req, res) {
   var token = new Token({
     _userId: user._id,
