@@ -161,6 +161,44 @@ exports.resendToken = function(req, res) {
     });
 };
 
+exports.updatePassword = function(req, res) {
+  User.findOne({ email: req.body.email })
+    .then(user => {
+      if (!user) {
+        return res.status(401).json({
+          success: true,
+          message:
+            "The email address " +
+            req.body.email +
+            " is not associated with any account. Double-check your email address and try again."
+        });
+      }
+
+      var password = req.body.newPassword;
+
+      bcrypt.hash(password, hash => {
+        user.password = hash;
+
+        user
+          .update()
+          .then(result => {
+            res.json({
+              success: true,
+              message: "Password updated successfully"
+            });
+          })
+          .catch(error => {
+            return res
+              .status(500)
+              .json({ success: false, message: error.message });
+          });
+      });
+    })
+    .catch(error => {
+      return res.status(500).json({ success: false, message: error.message });
+    });
+};
+
 sendVerificationMail = function(user, req, res) {
   var token = new Token({
     _userId: user._id,

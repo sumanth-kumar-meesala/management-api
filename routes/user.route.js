@@ -8,5 +8,6 @@ router.get('/confirmation/:token', user_controller.confirmation);
 router.post('/resend', user_controller.resendToken);
 router.post("/register", user_controller.register);
 router.post("/login", user_controller.login);
+router.post("/updatePassword", user_controller.updatePassword);
 
 module.exports = router;
