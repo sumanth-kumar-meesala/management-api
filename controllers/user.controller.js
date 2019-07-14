@@ -3,6 +3,7 @@ const Token = require("../models/token.model");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 exports.register = function(req, res) {
   User.findOne({ email: req.body.email })
@@ -174,7 +175,7 @@ exports.updatePassword = function(req, res) {
         });
       }
 
-      var password = req.body.newPassword;
+      var password = req.body.password;
 
       bcrypt.hash(password, hash => {
         user.password = hash;
