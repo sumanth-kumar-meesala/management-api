@@ -1,6 +1,6 @@
 const Question = require("../models/question.model");
 
-exports.addQuestion = function(req, res) {
+exports.add = function(req, res) {
   var question = new Question({
     question: req.body.question,
     answer: req.body.answer,
@@ -20,7 +20,7 @@ exports.addQuestion = function(req, res) {
     });
 };
 
-exports.listQuestion = function(req, res) {
+exports.list = function(req, res) {
   Question.find({})
     .then(data => {
         return res
