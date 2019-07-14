@@ -8,13 +8,26 @@ exports.addQuestion = function(req, res) {
     options: req.body.options
   });
 
-  question.save().then(result=>{
-    return res
-    .status(200)
-    .json({ success: true, message: "Question added successfully" });
-  }).catch(error=>{
-    return res
-    .status(500)
-    .json({ success: false, message: error.message });
-  })
+  question
+    .save()
+    .then(result => {
+      return res
+        .status(200)
+        .json({ success: true, message: "Question added successfully" });
+    })
+    .catch(error => {
+      return res.status(500).json({ success: false, message: error.message });
+    });
+};
+
+exports.listQuestion = function(req, res) {
+  Question.find({})
+    .then(data => {
+        return res
+      .status(200)
+      .json({ success: true, message: "Question added successfully",data:data });
+    })
+    .catch(error => {
+      return res.status(500).json({ success: false, message: error.message });
+    });
 };
