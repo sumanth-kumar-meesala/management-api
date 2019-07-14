@@ -9,5 +9,6 @@ router.post('/resend', user_controller.resendToken);
 router.post("/register", user_controller.register);
 router.post("/login", user_controller.login);
 router.post("/updatePassword", user_controller.updatePassword);
+router.post("/addUser", user_controller.addUser);
 
 module.exports = router;

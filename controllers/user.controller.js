@@ -4,6 +4,7 @@ const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const SALT_WORK_FACTOR = 10;
 
 exports.register = function(req, res) {
   User.findOne({ email: req.body.email })
@@ -76,7 +77,7 @@ exports.login = function(req, res) {
         };
 
         var token = jwt.sign(payload, "secret", {
-          expiresIn: 60 * 60 * 60 * 240
+          expiresIn: 60 * 60 * 60 * 60 * 240
         });
 
         res.json({
@@ -175,24 +176,69 @@ exports.updatePassword = function(req, res) {
         });
       }
 
-      var password = req.body.password;
+      bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+        if (err) {
+          return res.status(500).json({ success: false, message: err.message });
+        }
 
-      bcrypt.hash(password, hash => {
-        user.password = hash;
-
-        User.findByIdAndUpdate(user._id, { password: hash })
-          .then(result => {
-            res.json({
-              success: true,
-              message: "Password updated successfully"
-            });
-          })
-          .catch(error => {
+        bcrypt.hash(req.body.password, salt, function(err, hash) {
+          if (err) {
             return res
               .status(500)
-              .json({ success: false, message: error.message });
-          });
+              .json({ success: false, message: err.message });
+          }
+
+          User.findByIdAndUpdate(user.id, { password: hash })
+            .then(result => {
+              res.json({
+                success: true,
+                message: "Password updated successfully"
+              });
+            })
+            .catch(error => {
+              return res
+                .status(500)
+                .json({ success: false, message: error.message });
+            });
+        });
       });
+    })
+    .catch(error => {
+      return res.status(500).json({ success: false, message: error.message });
+    });
+};
+
+exports.addUser = function(req, res) {
+  User.findOne({ email: req.body.email })
+    .then(user => {
+      if (user)
+        return res.status(400).json({
+          success: false,
+          message:
+            "The email address you have entered is already associated with another account."
+        });
+
+      user = new User({
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password,
+        type: req.body.type,
+        isVerified: true
+      });
+
+      user
+        .save()
+        .then(result => {
+          return res.status(200).json({
+            success: true,
+            message: "User created successfully"
+          });
+        })
+        .catch(error => {
+          return res
+            .status(500)
+            .json({ success: false, message: error.message });
+        });
     })
     .catch(error => {
       return res.status(500).json({ success: false, message: error.message });
