@@ -55,6 +55,20 @@ exports.list = function(req, res) {
     });
 };
 
+exports.listCompleted = function(req, res) {
+  Completed.find({})
+    .then(data => {
+      return res.status(200).json({
+        success: true,
+        message: "Completed question list",
+        data: data
+      });
+    })
+    .catch(error => {
+      return res.status(500).json({ success: false, message: error.message });
+    });
+};
+
 exports.submit = function(req, res) {
   Question.find({})
     .then(data => {
