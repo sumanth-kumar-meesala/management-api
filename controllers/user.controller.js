@@ -180,8 +180,7 @@ exports.updatePassword = function(req, res) {
       bcrypt.hash(password, hash => {
         user.password = hash;
 
-        user
-          .update()
+        User.findByIdAndUpdate(user._id, { password: hash })
           .then(result => {
             res.json({
               success: true,
